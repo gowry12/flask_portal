@@ -1,0 +1,21 @@
+# Ignore the virtual environment folder
+venv/
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore database files (SQLite, etc.)
+*.db
+*.sqlite
+
+# Ignore Flask instance folder (if any)
+instance/
+
+# Ignore log files
+*.log
+
+# Ignore other temporary files (e.g., backups or editor files)
+*.bak
+*.swp
