@@ -14,7 +14,7 @@ app.config.update(
     MAIL_SERVER='smtp.gmail.com',
     MAIL_PORT=465,
     MAIL_USERNAME='ngowry12@gmail.com',
-    MAIL_PASSWORD='pyyc jmou ypkb iecf',  # Ensure this is the correct Gmail App Password
+    MAIL_PASSWORD='pyyc jmou ypkb iecf', 
     MAIL_USE_SSL=True,
     MAIL_DEFAULT_SENDER='ngowry12@gmail.com',
     MAIL_DEBUG=True  # Enable Mail Debugging
@@ -138,4 +138,4 @@ def logout():
 
 # Initialize the app and run
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
