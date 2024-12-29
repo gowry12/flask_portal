@@ -4,7 +4,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
 import random
-from flask_migrate import Migrate
+from flask_migrate import Migrate 
 
 # Initialize app and configurations
 app = Flask(__name__)
@@ -117,7 +117,7 @@ def login():
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form.get('email')).first()
         
-        if user and check_password_hash(user.password, request.form.get('password')):
+        if user and check_password_hash(user.password, request.form.get('password')): 
             if user.verified:
                 login_user(user)
                 return redirect(url_for('home'))
@@ -138,6 +138,4 @@ def logout():
 
 # Initialize the app and run
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # Create database tables if they don't exist
     app.run(debug=True)
