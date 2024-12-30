@@ -54,7 +54,7 @@ def register():
             flash('Email already exists!')
         else:
             # Generate a verification code
-            code = ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=6))
+            code = ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz@', k=6))
 
             # Create and save the user
             user = User(email=email, password=generate_password_hash(password), verification_code=code)
