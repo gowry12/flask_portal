@@ -1,22 +1,24 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
-from email_validator import validate_email, EmailNotValidError
 import random
 
 # Initialize app and configurations
 app = Flask(__name__)
+
+# Fetch configurations from environment variables
 app.config.update(
-    SECRET_KEY='secret_key',
-    SQLALCHEMY_DATABASE_URI='sqlite:///users.db',
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=465,
-    MAIL_USERNAME='ngowry12@gmail.com',
-    MAIL_PASSWORD='pyyc jmou ypkb iecf',
-    MAIL_USE_SSL=True,
-    MAIL_DEFAULT_SENDER='ngowry12@gmail.com',
+    SECRET_KEY=os.getenv('SECRET_KEY','secret_key'), 
+    SQLALCHEMY_DATABASE_URI=os.getenv('DATABASE_URL', 'sqlite:///users.db'),
+    MAIL_SERVER=os.getenv('MAIL_SERVER', 'smtp.gmail.com'),
+    MAIL_PORT=int(os.getenv('MAIL_PORT', 465)),
+    MAIL_USERNAME=os.getenv('MAIL_USERNAME', 'default_email@gmail.com'),
+    MAIL_PASSWORD=os.getenv('MAIL_PASSWORD', 'default_password'),
+    MAIL_USE_SSL=os.getenv('MAIL_USE_SSL', 'True').lower() == 'true',
+    MAIL_DEFAULT_SENDER=os.getenv('MAIL_DEFAULT_SENDER', 'default_email@gmail.com'),
 )
 
 # Extensions
@@ -42,19 +44,12 @@ def register():
     if request.method == 'POST':
         email, password = request.form['email'], request.form['password']
 
-        # Email format validation
-        try:
-            validate_email(email)  # Validate email format
-        except EmailNotValidError as e:
-            flash(f'Invalid email: {str(e)}')
-            return render_template('register.html')
-
         # Check if email already exists
         if User.query.filter_by(email=email).first():
             flash('Email already exists!')
         else:
             # Generate a verification code
-            code = ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz@', k=6))
+            code = ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=6))
 
             # Create and save the user
             user = User(email=email, password=generate_password_hash(password), verification_code=code)
